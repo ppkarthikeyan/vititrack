@@ -1,0 +1,37 @@
+# --- NEVER commit patient data or images ---
+data/sessions/
+data/**/*.jpg
+data/**/*.jpeg
+data/**/*.png
+data/**/*.heic
+data/**/*.dng
+data/**/*.zip
+patient/
+*.pdf
+!docs/**/*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.egg-info/
+dist/
+build/
+
+# Models / large artefacts
+models/*.pt
+models/*.pth
+models/*.onnx
+runs/
+wandb/
+outputs/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
