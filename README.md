@@ -75,4 +75,3 @@ If you use VitiTrack, please cite this repository (a preprint is planned).
 ## License
 
 Apache-2.0 for code. Data licences are per-source (see `docs/DATA_SOURCES.md`).
-
