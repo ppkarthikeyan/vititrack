@@ -44,5 +44,7 @@ def segment(bgr: np.ndarray, backend: str = "colour") -> tuple[np.ndarray, np.nd
         skin = skin_mask_ycrcb(bgr)
         return lesion_mask_colour(bgr, skin), skin
     if backend == "model":
-        raise NotImplementedError("learned segmentation backend not available yet — see docs/ROADMAP.md")
+        from vititrack.models.infer import segment_model
+        skin = skin_mask_ycrcb(bgr)
+        return segment_model(bgr), skin
     raise ValueError(backend)

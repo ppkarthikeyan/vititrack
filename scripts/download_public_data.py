@@ -1,15 +1,17 @@
 """Download public vitiligo datasets listed in docs/DATA_SOURCES.md into data/public/.
 
-Roboflow sets need a free API key: export ROBOFLOW_API_KEY=...  (roboflow.com → Settings → API)
+Roboflow sets need a free API key: export ROBOFLOW_API_KEY=...  (app.roboflow.com → Settings → Roboflow Keys → Private)
 Usage: python scripts/download_public_data.py
+Already-downloaded sets are skipped; failures are reported but don't stop the run.
 """
 import os, sys
 from pathlib import Path
 
+# (workspace, project, format)  — segmentation sets only; detection-only sets are not useful for Dice.
 ROBOFLOW_PROJECTS = [
-    ("vitiligo-rzgah", "viti-main"),
-    ("futureofikigai", "vitiligo_1"),
-    ("sedki", "vitiligo-amw4r"),
+    ("vitiligo-rzgah", "viti-main", "coco-segmentation"),
+    ("sedki", "vitiligo-amw4r", "coco-segmentation"),
+    ("vitiligo-ubfrp", "vitiligo-o8hjs", "coco-segmentation"),
 ]
 
 def main():
@@ -22,11 +24,19 @@ def main():
         sys.exit("pip install roboflow")
     rf = Roboflow(api_key=key)
     out = Path("data/public"); out.mkdir(parents=True, exist_ok=True)
-    for ws, proj in ROBOFLOW_PROJECTS:
-        p = rf.workspace(ws).project(proj)
-        v = p.versions()[0]
-        v.download("coco-segmentation", location=str(out / f"roboflow_{proj}"))
-        print("downloaded", ws, proj)
+    ok, failed = [], []
+    for ws, proj, fmt in ROBOFLOW_PROJECTS:
+        dest = out / f"roboflow_{proj}"
+        if dest.exists() and any(dest.iterdir()):
+            print("already present, skipping", dest); ok.append(proj); continue
+        try:
+            p = rf.workspace(ws).project(proj)
+            v = p.versions()[0]
+            v.download(fmt, location=str(dest))
+            print("downloaded", ws, proj); ok.append(proj)
+        except Exception as e:  # noqa: BLE001
+            print(f"FAILED {ws}/{proj}: {str(e)[:200]}"); failed.append(proj)
+    print(f"\ndone. ok={ok} failed={failed}")
 
 if __name__ == "__main__":
     main()

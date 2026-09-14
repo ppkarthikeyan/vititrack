@@ -56,6 +56,13 @@ pip install -r requirements.txt
 pytest
 ```
 
+## Train the segmentation model
+
+```bash
+python -m vititrack.models.train --epochs 15 --size 320 --encoder mobilenet_v2
+```
+Writes `models/unet_mobilenet_v2.pt` (gitignored) and a skin-tone-stratified test report in `data/eval/`. Then `score-vasi` can use `backend="model"`. Baseline results live in `docs/results/`.
+
 ## Data
 
 No patient images are in this repo. Public sources used for baselines and the evaluation set are listed in `docs/DATA_SOURCES.md` with licences. Longitudinal validation uses the VR Foundation CloudBank (academic access) and partner-clinic data under ethics approval.

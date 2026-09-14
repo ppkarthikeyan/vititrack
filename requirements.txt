@@ -11,3 +11,5 @@ torchvision>=0.17
 segmentation-models-pytorch>=0.3.3
 timm>=0.9
 pytest>=8.0
+tabulate>=0.9
+transformers>=4.40

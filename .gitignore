@@ -35,3 +35,7 @@ outputs/
 .DS_Store
 .vscode/
 .idea/
+
+# eval outputs (regenerate with run_baseline / train)
+data/eval/*_per_image.csv
+data/eval/*_summary.md
